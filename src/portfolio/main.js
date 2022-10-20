@@ -1,10 +1,17 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
-import "../portfolio/style.css";
+import "../App.css";
+import NavBar from "../components/NavBar";
+import Banner from "../components/Banner";
+import Skills from "../components/Skills";
+import { Container, Row, Col } from "react-bootstrap";
 
-export default function PortFolio() {
+export default function Portfolio() {
   return (
-    <div className="container">
-      <h1>Hello, I am Thura Lin Htut</h1>
+    <div className="App">
+      <NavBar />
+      <Banner />
+      <Skills />
     </div>
-  ) ;
+  );
 }
