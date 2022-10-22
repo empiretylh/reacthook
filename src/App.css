@@ -23,10 +23,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 75px;
+  
 }
-
 body {
   font-weight: 400;
   overflow-x: hidden;
@@ -215,7 +213,22 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 
 .banner {
-  margin-top: 20vh;
+  height: 100vh;
+  background-color: #110e0e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+
+}
+
+section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start
 }
 
 .banner .tagline {
@@ -229,7 +242,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 
 .banner h1 {
-  font-size: 65px;
+  font-size: 2.5rem;
   font-weight: 700;
   letter-spacing: 00.8px;
   margin-bottom: 20px;
@@ -267,8 +280,8 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 
 .banner img {
-  width: 50vmin;
-  height: 50vmin;
+  width: 100%;
+  height: 100%;
   animation: updown 3s linear infinite;
 }
 
@@ -285,19 +298,31 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 
 .skill {
-  padding: 0 0 50px 0;
- }
+  height: 100vh;
+  background-color: #302727;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+}
 
-.skill-bx {
-  background-color: #151515;
-  border-radius: 64px;
-  text-align: center;
-  padding: 60px;
-  margin-top: 60px;
+.skill-range input{
+  margin:0;
+  padding:0; 
+  background-color: rgb(209, 41, 41);
+  width:100%;
+}
+
+.skill-range h3{
+  margin:0 !important;
+  padding:0 !important;
+  font-size: 30px !important;
+  color:'white' !important;
+  font-weight: bold;
 }
 
 .skill h5 {
-  font-size: 45px;
+  font-size: 2ch;
   font-weight: 700;
 }
 
@@ -309,13 +334,37 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   margin: 14px 0 75px 0;
 }
 
-.skill-slider{
-  width:80%;
-  margin:0 auto;
+
+
+.skill-slider {
+  width: 80%;
+  margin: 0 auto;
   position: relative;
 }
 
-.skill-slider .item img{
-  width:50%;
+.skill-slider .item img {
+  width: 50%;
   margin: 0 auto 15px auto;
+}
+
+.reveal {
+  position: relative;
+  transform: translateY(150px);
+  opacity: 0;
+  transition: 2s all ease;
+}
+.reveal.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+.App {
+  height:100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.App section {
+  scroll-snap-align: start;
 }

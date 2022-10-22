@@ -10,7 +10,7 @@ import facebookicon from "../assets/fb.svg";
 import igicon from "../assets/ig.svg";
 import githubicon from "../assets/github.svg";
 import licon from "../assets/li.svg";
-
+import { PICTURE as p } from "../assets/assets";
 function BasicExample() {
   const [activeLink, setActiveLink] = useState("home");
 
@@ -33,7 +33,7 @@ function BasicExample() {
   };
 
   return (
-    <Navbar expand="sm" className={scrolled ? "scrolled" : ""}>
+    <Navbar expand="lg" className={scrolled ? "scrolled" : ""}>
       <Container>
         <Navbar.Brand href="#home">
           <img

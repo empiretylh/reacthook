@@ -1,3 +1,3 @@
-import './App.css';
-import PortFolio from './portfolio/main';
-export default PortFolio;
+import ContextLearn from './contextlearn/main';
+import MobilePOS from './mobilepos/main';
+export default MobilePOS;
