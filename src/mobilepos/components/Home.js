@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Col, Row, Container } from "react-bootstrap";
 import { useQuery } from "react-query";
 import database from "../services/database";
 
@@ -18,27 +19,38 @@ export default function Home() {
   console.log("render");
 
   return (
-    <div>
-      <p>Home</p>
-      {products.data.data.map((item, id) => (
-        <p key={id}>{item.name}</p>
-      ))}
-      {products.data.data.map((item, id) => (
-        <p key={id}>{item.name}</p>
-      ))}
-      {products.data.data.map((item, id) => (
-        <p key={id}>{item.name}</p>
-      ))}
-
-{products.data.data.map((item, id) => (
-        <p key={id}>{item.name}</p>
-      ))}
-{products.data.data.map((item, id) => (
-        <p key={id}>{item.name}</p>
-      ))}{products.data.data.map((item, id) => (
-        <p key={id}>{item.name}</p>
-      ))}
- 
-    </div>
-  ); 
+    <React.Fragment>
+      <section className="home">
+        <h1>Dashboard</h1>
+        <Container fluid>
+          <Row>
+            <Col>
+              <div className="f-tabs one">
+                <h2>Sales</h2>
+                <h3>50,000 MMK</h3>
+              </div>
+            </Col>
+            <Col>
+              <div className="f-tabs two">
+                <h2>Expense</h2>
+                <h3>50,000 MMK</h3>
+              </div>
+            </Col>
+            <Col>
+              <div className="f-tabs three">
+                <h2>Purchase</h2>
+                <h3>50,000 MMK</h3>
+              </div>
+            </Col>
+            <Col>
+              <div className="f-tabs four">
+                <h2>Products Balance Amount</h2>
+                <h3>50,000 MMK</h3>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    </React.Fragment>
+  );
 }

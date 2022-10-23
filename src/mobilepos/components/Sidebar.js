@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
+import React, { useState } from "react";
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -11,6 +11,16 @@ import {
 import { Link as NavLink } from "react-router-dom";
 import { PICTURE } from "../../assets/assets";
 const Sidebar = () => {
+  const [active, setActive] = useState("home");
+
+
+  const UpdateActive = (link)=>{
+    setActive(link)
+  }
+
+  console.log('render navbar')
+
+
   return (
     <div
       className="sidebar"
@@ -18,7 +28,7 @@ const Sidebar = () => {
     >
       <CDBSidebar textColor="#010101" backgroundColor="#f0f0f0">
         <CDBSidebarHeader
-          style={{ padding: 0, margin: 0}}
+          style={{ padding: 0, margin: 0 }}
           prefix={<i className="fa fa-bars fa-large"></i>}
         >
           <img src={PICTURE.logo} style={{ width: "30px", height: "30px" }} />
@@ -34,17 +44,29 @@ const Sidebar = () => {
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu className="sidebar-menu">
             <NavLink exact to="/" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns" className='sidebar-menu-item active'>Dashboard</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem
+                icon="columns"
+                className={active==='home'?"sidebar-menu-item active":"sidebar-menu-item"}
+              >
+                Dashboard
+              </CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/tables" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table" className='sidebar-menu-item'>Tables</CDBSidebarMenuItem>
+            <NavLink exact to="/tables" activeClassName="activeClicked" onClick={()=>UpdateActive('sales')}>
+              <CDBSidebarMenuItem icon="table" className={active==='sales'?"sidebar-menu-item active":"sidebar-menu-item"}>
+                Sales
+              </CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/profile" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user" className='sidebar-menu-item'>Profile page</CDBSidebarMenuItem>
+            <NavLink exact to="/profile" activeClassName="activeClicked" onClick={()=>UpdateActive('products')}>
+              <CDBSidebarMenuItem icon="user" className={active==='products'?"sidebar-menu-item active":"sidebar-menu-item"}>
+                Products
+              </CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/analytics" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="chart-line" className='sidebar-menu-item'>
-                Analytics
+            <NavLink exact to="/analytics" activeClassName="activeClicked" onClick={()=>UpdateActive('expense')} className={active==='expense'?"sidebar-menu-item active":"sidebar-menu-item"}>
+              <CDBSidebarMenuItem
+                icon="chart-line"
+                className="sidebar-menu-item"
+              >
+                Expense
               </CDBSidebarMenuItem>
             </NavLink>
 
@@ -53,6 +75,7 @@ const Sidebar = () => {
               to="/hero404"
               target="_blank"
               activeClassName="activeClicked"
+
             >
               <CDBSidebarMenuItem icon="exclamation-circle">
                 404 page

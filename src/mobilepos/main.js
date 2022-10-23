@@ -12,10 +12,10 @@ import { Container } from "react-bootstrap";
 
 const queryClient = new QueryClient();
 const token = authService.getCurrentUserToken();
-    axios.defaults.baseURL = "http://192.168.43.247:8000";
-    axios.defaults.headers.common = {
-      Authorization: `Token ${token}`,
-    };
+axios.defaults.baseURL = "http://192.168.43.247:8000";
+axios.defaults.headers.common = {
+  Authorization: `Token ${token}`,
+};
 const MobilePOS = () => {
   useEffect(() => {
     const token = authService.getCurrentUserToken();
@@ -29,16 +29,28 @@ const MobilePOS = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>        
-       <div style={{display:'flex',flexDirection:'row',position:'fixed',width:'100vw'}}>
-        <SideBar />        
-        <main style={{height:'100vh',overflow:"auto",minWidth:"100%"}}>
-          <h1>MobilePOS Dashboard</h1>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </main>
+      <Router>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            position: "fixed",
+            width: "100vw",
+          }}
+        >
+          <SideBar />
+          <main
+            style={{
+              height: "100vh",
+              width:'100vw',
+              overflow: "auto",             
+            }}
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </main>
         </div>
       </Router>
     </QueryClientProvider>
