@@ -9,9 +9,9 @@ import { PICTURE as p } from "../../assets/assets";
 
 export default function NavigationBar() {
   return (
-    <Navbar bg="primary" expand="sm">
+    <Navbar bg="dark" expand="sm">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="#home" className="navbar-band">
           <img
             src={p.logo}
             style={{ width: 50, height: 50, resize: "contain" }}
@@ -22,10 +22,10 @@ export default function NavigationBar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link>
-              <Link to="/">Home</Link>
+              <Link to="/" className="nav-link active">Home</Link>
             </Nav.Link>
             <Nav.Link>
-              <Link to="/login">Login</Link>
+              <Link to="/login" className="nav-link">Login</Link>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

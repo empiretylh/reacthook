@@ -21,10 +21,24 @@ export default function Home() {
     <div>
       <p>Home</p>
       {products.data.data.map((item, id) => (
-        <p>{item.name}</p>
+        <p key={id}>{item.name}</p>
+      ))}
+      {products.data.data.map((item, id) => (
+        <p key={id}>{item.name}</p>
+      ))}
+      {products.data.data.map((item, id) => (
+        <p key={id}>{item.name}</p>
       ))}
 
-    {JSON.stringify(category.data.data)}
+{products.data.data.map((item, id) => (
+        <p key={id}>{item.name}</p>
+      ))}
+{products.data.data.map((item, id) => (
+        <p key={id}>{item.name}</p>
+      ))}{products.data.data.map((item, id) => (
+        <p key={id}>{item.name}</p>
+      ))}
+ 
     </div>
   ); 
 }

@@ -14,7 +14,7 @@ class Database {
     return axios.get("/api/sales/");
   }
   getExpense() {
-    return axios.get("/api/expense/");
+    return axios.get("/api/expenses/");
   }
 }
 
