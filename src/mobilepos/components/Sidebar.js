@@ -16,9 +16,9 @@ const Sidebar = () => {
       className="sidebar"
       style={{ display: "flex", height: "100vh", overflow: "scroll initial" }}
     >
-      <CDBSidebar textColor="#fff" backgroundColor="#333">
+      <CDBSidebar textColor="#010101" backgroundColor="#f0f0f0">
         <CDBSidebarHeader
-          style={{ padding: 0, margin: 0 ,backgroundColor:'red'}}
+          style={{ padding: 0, margin: 0}}
           prefix={<i className="fa fa-bars fa-large"></i>}
         >
           <img src={PICTURE.logo} style={{ width: "30px", height: "30px" }} />
@@ -32,18 +32,18 @@ const Sidebar = () => {
         </CDBSidebarHeader>
 
         <CDBSidebarContent className="sidebar-content">
-          <CDBSidebarMenu>
+          <CDBSidebarMenu className="sidebar-menu">
             <NavLink exact to="/" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="columns" className='sidebar-menu-item active'>Dashboard</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/tables" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Tables</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="table" className='sidebar-menu-item'>Tables</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/profile" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="user" className='sidebar-menu-item'>Profile page</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/analytics" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="chart-line">
+              <CDBSidebarMenuItem icon="chart-line" className='sidebar-menu-item'>
                 Analytics
               </CDBSidebarMenuItem>
             </NavLink>

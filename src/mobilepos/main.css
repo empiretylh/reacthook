@@ -1,0 +1,26 @@
+.sidebar-menu-item {
+  color: #010101;
+  padding: 0 !important;
+  margin: 0 !important;
+  
+}
+
+.sidebar-menu-item:hover {
+  background-color: #4293fc;
+  color:azure;
+  padding: 0 !important;
+  margin: 0 !important;
+  
+}
+.sidebar-menu-item.active{
+  background-color: aqua;
+}
+.sidebar-content {
+ 
+  padding-top: 0px !important;
+}
+
+.sidebar-menu {
+  padding-top: 0px !important;
+  
+}
