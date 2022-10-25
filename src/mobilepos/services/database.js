@@ -16,6 +16,13 @@ class Database {
   getExpense() {
     return axios.get("/api/expenses/");
   }
+  getPurchase() {
+    return axios.get("/api/purchases/ ");
+  }
+
+  getTopProduct(params) {
+    return axios.get("/api/toproduct/", { params: params });
+  }
 }
 
 export default new Database();

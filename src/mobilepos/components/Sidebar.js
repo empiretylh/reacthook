@@ -17,8 +17,6 @@ const Sidebar = () => {
     setActive(link);
   };
 
-  
-
   return (
     <div
       className="sidebar"
@@ -41,7 +39,7 @@ const Sidebar = () => {
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu className="sidebar-menu">
-            <NavLink to="/">
+            <NavLink to="/" onClick={() => UpdateActive("home")}>
               <CDBSidebarMenuItem
                 icon="columns"
                 className={
@@ -108,7 +106,7 @@ const Sidebar = () => {
               padding: "20px 5px",
             }}
           >
-            Sidebar Footer
+            Copyright 2022
           </div>
         </CDBSidebarFooter>
       </CDBSidebar>

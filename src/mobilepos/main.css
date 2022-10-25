@@ -1,3 +1,13 @@
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 .sidebar {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -44,18 +54,22 @@
   align-items: center;
 }
 
+.f-tabs div {
+  margin-left: 2px;
+}
+
 .f-tabs img {
   width: 5rem;
   height: 5rem;
 }
 
 .f-tabs h2 {
-  font-size: 1.2rem;
+  font-size: 25px;
   font-weight: bold;
 }
 
 .f-tabs h3 {
-  font-size: 1rem;
+  font-size: 20px;
 }
 
 .f-tabs.one {
@@ -73,3 +87,62 @@
 .f-tabs.four {
   background-image: url("../assets/color/d4.svg");
 }
+
+.noti-alert {
+  background-color: rgb(235, 235, 235);
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  border-radius: 15px;
+}
+
+.noti-alert button {
+  margin-left: 5px;
+}
+
+.noti-column {
+  display: "flex";
+  justifycontent: "center";
+  alignitems: "center";
+}
+
+.show-detail-data {
+  margin-top: 10px;
+}
+
+
+.top-money-table{
+  background-color: aqua;
+  width: 600px;
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  overflow: auto;
+}
+  ```````````````````````````````````````
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+
+ 
