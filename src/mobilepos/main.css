@@ -110,8 +110,7 @@
   margin-top: 10px;
 }
 
-
-.top-money-table{
+.top-money-table {
   background-color: aqua;
   width: 600px;
   height: 100px !important;
@@ -119,8 +118,7 @@
   max-height: 100px !important;
   overflow: auto;
 }
-  ```````````````````````````````````````
-
+/* 
 table caption {
   font-size: 1.5em;
   margin: .5em 0 .75em;
@@ -129,20 +127,54 @@ table caption {
 table tr {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
-  padding: .35em;
+  padding: .65em;
 }
 
-table th,
-table td {
-  padding: .625em;
-  text-align: center;
-}
+
 
 table th {
   font-size: .85em;
   letter-spacing: .1em;
+  padding:0.5em;
   text-transform: uppercase;
+} */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.limit-height-table {
+  display: block;
+  max-height: 40vh;
+  overflow: auto;
+}
+
+.limit-height-table > table > thead > tr > th {
+  position: sticky;
+  top: 0;
+  background-color: #7db8e8;
+  border-bottom: 2px solid whitesmoke;
+  text-align: center;
+}
+
+/* Dashboard Pie Chart HeightSize */
+
+.main-pie-chart > div > div > canvas {
+  height: 40vh !important;
 }
 
 
- 

@@ -2,6 +2,7 @@ import React, { Component, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import authService from "../services/auth.service";
+import axios from 'axios';
 export default function Login() {
   const username = useRef(0);
   const password = useRef(0);
@@ -10,6 +11,9 @@ export default function Login() {
     e.preventDefault();
     console.log(username.current, password.current);
     // authService.admin();
+    axios.defaults.headers.common = {
+      Authorization: null,
+    };
      authService.login(username.current, password.current);
   };
 

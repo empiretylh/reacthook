@@ -5,6 +5,9 @@ import database from "../services/database";
 import { PICTURE as pic } from "../../assets/assets";
 import Button from "react-bootstrap/Button";
 import { Pie } from "@ant-design/plots";
+
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
 const numberWithCommas = (x = 0) => {
   return x
     .toString()
@@ -23,6 +26,14 @@ export default function Home() {
   const toproduct = useQuery(["topProducts"], database.getTopProduct);
 
   const productsdata = products.data ? products.data.data : null;
+
+  const [radioValue, setRadioValue] = useState("1");
+
+  const radios = [
+    { name: "Today", value: "1" },
+    { name: "Days View", value: "2" },
+    { name: "Month View", value: "3" },
+  ];
 
   const ComputeSales = useMemo(() => {
     let price = 0;
@@ -121,6 +132,8 @@ export default function Home() {
     };
   }, [PieChartDataCompute]);
 
+
+  
   if (products.isLoading) return "Loading...";
 
   if (products.error) return "An error has occurred: " + products.error.message;
@@ -207,100 +220,94 @@ export default function Home() {
           <Row className="show-detail-data">
             <Col sm={12} md={6} lg={4}>
               <h5>Top get Money Products</h5>
-
-              <table cellspacing="0" cellpadding="0" border="0" width="325">
-                <tr>
-                  <td>
-                    <table
-                      cellspacing="0"
-                      cellpadding="1"
-                      border="1"
-                      width="300"
-                    >
-                      <tr>
-                        <th>Header 1</th>
-                        <th>Header 2</th>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div
-                      style={{ width: "100%", height: 80, overflow: "auto" }}
-                    >
-                      <table
-                        cellspacing="0"
-                        cellpadding="1"
-                        border="1"
-                        width="300"
-                      >
-                        <tr>
-                          <td>new item</td>
-                          <td>new item</td>
-                        </tr>
-                      </table>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+              <div className={"limit-height-table"}>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Products Name</th>
+                      <th>Total Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {PieChartDataCompute &&
+                      PieChartDataCompute.map((item, index) => (
+                        <>
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>{item.type}</td>
+                            <td style={{ textAlign: "right" }}>
+                              {numberWithCommas(item.price)}
+                            </td>
+                          </tr>
+                        </>
+                      ))}
+                  </tbody>
+                </Table>
+              </div>
             </Col>
-            <Col>
-              <h5>Top get Money Products</h5>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Products Name</th>
-                    <th>Total Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {PieChartDataCompute &&
-                    PieChartDataCompute.map((item, index) => (
-                      <>
-                        <tr>
-                          <td>{index + 1}</td>
-                          <td>{item.type}</td>
-                          <td style={{ textAlign: "right" }}>
-                            {numberWithCommas(item.price)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>{index + 1}</td>
-                          <td>{item.type}</td>
-                          <td style={{ textAlign: "right" }}>
-                            {numberWithCommas(item.price)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>{index + 1}</td>
-                          <td>{item.type}</td>
-                          <td style={{ textAlign: "right" }}>
-                            {numberWithCommas(item.price)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>{index + 1}</td>
-                          <td>{item.type}</td>
-                          <td style={{ textAlign: "right" }}>
-                            {numberWithCommas(item.price)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>{index + 1}</td>
-                          <td>{item.type}</td>
-                          <td style={{ textAlign: "right" }}>
-                            {numberWithCommas(item.price)}
-                          </td>
-                        </tr>
-                      </>
-                    ))}
-                </tbody>
-              </Table>
-            </Col>
-            <Col lg={4}>
+            <Col lg={4} md={6} sm={12} className={"main-pie-chart"}>
               <h5>Top Sales Products</h5>
+              {PieChartDataCompute && <Pie {...config} />}
+            </Col>
+            <Col lg={4} md={6} sm={12} className={"main-pie-chart"}>
+              <h5>Another Pie Chart Data May be later</h5>
+              {PieChartDataCompute && <Pie {...config} />}
+            </Col>
+          </Row>
+          <Row className="show-detail-data">
+            <Col sm={12} md={6} lg={8}>
+              <h5>Sales Report</h5>{" "}
+              <div className={"time-button-group mb-2"}>
+              <ButtonGroup>
+                {radios.map((radio, idx) => (
+                  <ToggleButton
+                    key={idx}
+                    id={`radio-${idx}`}
+                    type="radio"
+                    variant={"outline-dark"}
+                    name="radio"
+                    value={radio.value}
+                    checked={radioValue === radio.value}
+                    onChange={(e) => setRadioValue(e.currentTarget.value)}
+                  >
+                    {radio.name}
+                  </ToggleButton>
+                ))}
+              </ButtonGroup>
+             </div>
+              <div className={"limit-height-table"}>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Time</th>
+                      <th>Total Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {PieChartDataCompute &&
+                      PieChartDataCompute.map((item, index) => (
+                        <>
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>{item.type}</td>
+                            <td style={{ textAlign: "right" }}>
+                              {numberWithCommas(item.price)}
+                            </td>
+                          </tr>
+                        </>
+                      ))}
+                  </tbody>
+                </Table>
+              </div>
+            </Col>
+            <Col lg={4} md={6} sm={12} className={"main-pie-chart"}>
+              <h5>Top Sales Products</h5>
+              {PieChartDataCompute && <Pie {...config} />}
+            </Col>
+            <Col lg={4} md={6} sm={12} className={"main-pie-chart"}>
+              <h5>Another Pie Chart Data May be later</h5>
               {PieChartDataCompute && <Pie {...config} />}
             </Col>
           </Row>
