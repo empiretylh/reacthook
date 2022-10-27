@@ -14,6 +14,7 @@ const Sidebar = () => {
   const [active, setActive] = useState("home");
 
   const UpdateActive = (link) => {
+    console.log(link)
     setActive(link);
   };
 
@@ -42,6 +43,7 @@ const Sidebar = () => {
             <NavLink to="/" onClick={() => UpdateActive("home")}>
               <CDBSidebarMenuItem
                 icon="columns"
+                iconSize="lg"
                 className={
                   active === "home"
                     ? "sidebar-menu-item active"
@@ -51,9 +53,11 @@ const Sidebar = () => {
                 Dashboard
               </CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="/tables" onClick={() => UpdateActive("sales")}>
+            <NavLink to="/sales" onClick={() => UpdateActive("sales")}>
               <CDBSidebarMenuItem
-                icon="table"
+                icon="shopping-cart"
+                iconSize="lg"
+                iconClassName={'salesicon'}
                 className={
                   active === "sales"
                     ? "sidebar-menu-item active"
@@ -63,9 +67,23 @@ const Sidebar = () => {
                 Sales
               </CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="/profile" onClick={() => UpdateActive("products")}>
+            <NavLink to="/category" onClick={() => UpdateActive("category")}>
               <CDBSidebarMenuItem
-                icon="user"
+                iconSize="lg"
+                icon="boxes"
+                className={
+                  active === "category"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
+              >
+                Category
+              </CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink to="/product" onClick={() => UpdateActive("products")}>
+              <CDBSidebarMenuItem
+                iconSize="lg"
+                icon="shopping-bag"
                 className={
                   active === "products"
                     ? "sidebar-menu-item active"
@@ -76,28 +94,131 @@ const Sidebar = () => {
               </CDBSidebarMenuItem>
             </NavLink>
             <NavLink
-              to="/analytics"
+              to="/expense"
               onClick={() => UpdateActive("expense")}
-              className={
-                active === "expense"
-                  ? "sidebar-menu-item active"
-                  : "sidebar-menu-item"
-              }
+              
             >
               <CDBSidebarMenuItem
-                icon="chart-line"
-                className="sidebar-menu-item"
+                iconSize="lg"
+                icon="wallet"
+                className={
+                  active === "expense"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
               >
                 Expense
               </CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink t to="/hero404" target="_blank">
-              <CDBSidebarMenuItem icon="exclamation-circle">
-                404 page
+            <NavLink
+              to="/otherincome"
+              onClick={() => UpdateActive("otherincome")}
+             
+            >
+              <CDBSidebarMenuItem
+                icon="hand-holding-usd"
+                className={
+                  active === "otherincome"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
+                iconSize="lg"
+
+              >
+                Other Income
+              </CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink
+              to="/purchase"
+              onClick={() => UpdateActive("purchase")}
+              
+            >
+              <CDBSidebarMenuItem
+                icon="box"
+                className={
+                  active === "purchase"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
+                iconSize='lg'
+              >
+                Purchase
+              </CDBSidebarMenuItem>
+            </NavLink>
+
+            <div className="divider"/>
+            <NavLink
+              to="/report"
+              onClick={() => UpdateActive("report")}
+              
+            >
+              <CDBSidebarMenuItem
+                icon="chart-line"
+                className={
+                  active === "report"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
+                iconSize='lg'
+              >
+                Report
+              </CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink
+              to="/contact"
+              onClick={() => UpdateActive("contact")}
+             
+            >
+              <CDBSidebarMenuItem
+                icon="address-card"
+                className={
+                  active === "contact"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
+                iconSize='lg'
+              >
+                Customer & Supplier List
+              </CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink
+              to="/voucher"
+              onClick={() => UpdateActive("voucher")}
+             
+            >
+              <CDBSidebarMenuItem
+                icon="scroll"
+                className={
+                  active === "voucher"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
+                iconSize='lg'
+              >
+                Voucher
+              </CDBSidebarMenuItem>
+            </NavLink>
+            <div className="divider"/>
+            <NavLink
+              to="/setting"
+              onClick={() => UpdateActive("setting")}
+             
+            >
+              <CDBSidebarMenuItem
+                icon="cogs"
+                className={
+                  active === "setting"
+                    ? "sidebar-menu-item active"
+                    : "sidebar-menu-item"
+                }
+                iconSize='lg'
+              >
+                Settings
               </CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
+       
         </CDBSidebarContent>
 
         <CDBSidebarFooter style={{ textAlign: "center" }}>

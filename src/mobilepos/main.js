@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Category from  "./components/Category";
+import Products from "./components/Products";
 import authService from "./services/auth.service";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Navbar from "./components/Navbar";
@@ -48,6 +50,9 @@ const MobilePOS = () => {
           >
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/sales" element={<Home />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/product" element={<Products />} />
               <Route path="/login" element={<Login />} />
             </Routes>
           </main>

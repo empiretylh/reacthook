@@ -13,19 +13,20 @@
 }
 
 .sidebar-menu-item {
-  color: #010101;
+  color: #000000;
   padding: 0 !important;
   margin: 0 !important;
 }
 
 .sidebar-menu-item:hover {
-  background-color: #4293fc;
-  color: azure;
+  background-color: rgba(199, 5, 5, 0.842);
+  color: white;
   padding: 0 !important;
   margin: 0 !important;
 }
 .sidebar-menu-item.active {
-  background-color: rgb(0, 140, 255);
+  background-color: rgba(199, 5, 5, 0.842);
+  color: white;
 }
 .sidebar-content {
   padding-top: 0px !important;
@@ -35,9 +36,12 @@
   padding-top: 0px !important;
 }
 
-.home {
+section {
   padding: 5px;
   width: "100%";
+}
+section > h1 {
+  padding: 10px;
 }
 
 .f-tabs {
@@ -93,17 +97,19 @@
   display: flex;
   align-items: center;
   margin: 5px;
+}
+
+.noti-column button {
+  display: flex;
+  color: #fff;
+  width: 100%;
   border-radius: 15px;
-}
+  padding: 5px;
+  margin: 0px 0px 5px 0px;
+  width: "100%";
+  min-width: 200px;
 
-.noti-alert button {
-  margin-left: 5px;
-}
-
-.noti-column {
-  display: "flex";
-  justifycontent: "center";
-  alignitems: "center";
+  align-items: center;
 }
 
 .show-detail-data {
@@ -171,10 +177,91 @@ table th {
   text-align: center;
 }
 
+table > thead > tr > th {
+  text-align: center;
+}
 /* Dashboard Pie Chart HeightSize */
 
 .main-pie-chart > div > div > canvas {
-  height: 40vh !important;
+  height: 300px !important;
+}
+
+.divider {
+  width: "100%";
+  background-color: rgba(0, 0, 0, 0.19);
+  padding-top: 2px;
+}
+
+.salesicon {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  font-size: larger;
+}
+
+/* Category ___________________________________________________________________________________________ */
+
+.category .title {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.category .title h1 {
+  margin-left: 5px;
+}
+
+.category-container {
+  border-radius: 15px;
+  background-color: rgb(230, 230, 230);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 2rem;
+  display:block;
+  height: 90vh;
+  padding: 20px;
+  overflow: auto;
+}
+
+.success-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgb(30, 31, 31);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  color: white;
+  padding: 5px 100px;
+  border-radius: 15px;
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  
+}
+
+.success-info h6 {
+  margin-left: 5px;
+  padding-top: 10px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    bottom: 1rem;
+  
+  }
+  100% {
+    opacity: 1;
+    bottom: 2rem;    
+  }
 }
 
 
+
+.category-table{
+  max-height: 100%;
+}
