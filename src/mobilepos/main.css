@@ -264,4 +264,32 @@ table > thead > tr > th {
 
 .category-table{
   max-height: 100%;
+
+}
+
+
+/*Product..................*/
+
+.productItem{
+  margin-bottom:8px;
+  display:flex;
+  flex-direction:row;
+  background-color:#f1f1f1;
+  padding:10px
+}
+
+.productItem img{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+
+}
+
+.productItem div{
+  margin-left:10px;
+ 
+}
+
+.productItem div h5{
+  font-weight:bold;
 }

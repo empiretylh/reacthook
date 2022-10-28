@@ -55,7 +55,7 @@ export default function Home() {
       queryClient.invalidateQueries(["category"]);
 
       categorytextfield.current.value = null;
-      console.log("Success");
+  
       setInfoShow(true);
       setTimeout(() => setInfoShow((prev) => !prev), 6000);
     },
@@ -80,18 +80,27 @@ export default function Home() {
 
   products.data && console.log("products", products.data.data);
 
+  const IdToCategoryText =  ()=>{
+    
+  }
+
   const ProductItem = (item) => {
     return (
-      <div>
+      <div className="productItem">
         <img
           src={
             ! item.pic.includes("null")
               ? axios.defaults.baseURL + item.pic
               : "https://static.thenounproject.com/png/101825-200.png"
           }
-          style={{ width: 100, height: 100 }}
+          
         />
-        {item.name}
+        <div>
+          <h5>{item.name}</h5>
+           <h5>{item.category}</h5>
+            <h5>{numberWithCommas(item.price)}</h5>
+             <h5>{item.qty}</h5>
+        </div>
       </div>
     );
   };
@@ -130,8 +139,7 @@ export default function Home() {
           <Row>
             <Col>
               <div>
-                {products.data &&
-                  products.data.data.map((item, index) => ProductItem(item))}
+                {products.data && products.data.data.map((item,index)=>ProductItem(item))}
               </div>
             </Col>
           </Row>
