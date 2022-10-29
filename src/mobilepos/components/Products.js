@@ -15,6 +15,10 @@ import Button from "react-bootstrap/Button";
 import { Pie, Column, Area } from "@ant-design/plots";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
+
 import {
   Bag,
   Boxes,
@@ -36,6 +40,8 @@ const numberWithCommas = (x = 0) => {
     .concat(" Ks");
 };
 
+
+
 export default function Home() {
   const products = useQuery(["products"], database.getProducts);
   const category = useQuery(["category"], database.getCategorys);
@@ -49,6 +55,8 @@ export default function Home() {
   const categorytextfield = useRef("");
 
   const [infoshow, setInfoShow] = useState(false);
+
+  const [Choose_Category,setChoose_Category] = useState('All');
 
   const addCategory = useMutation(database.postCategory, {
     onSuccess: () => {
@@ -80,7 +88,13 @@ export default function Home() {
 
   products.data && console.log("products", products.data.data);
 
-  const IdToCategoryText =  ()=>{
+
+  const IdToCategoryText =  (id)=>{
+    if(category.data){
+      const cat = category.data.data.filter((item)=> item.id===id)
+      console.log(cat[0].title,'category')
+      return cat[0].title
+    }
     
   }
 
@@ -97,9 +111,9 @@ export default function Home() {
         />
         <div>
           <h5>{item.name}</h5>
-           <h5>{item.category}</h5>
+           <p>{IdToCategoryText(item.category)}</p>
             <h5>{numberWithCommas(item.price)}</h5>
-             <h5>{item.qty}</h5>
+             <p>Instock {item.qty} Qty</p>          
         </div>
       </div>
     );
@@ -138,6 +152,13 @@ export default function Home() {
           </Row>
           <Row>
             <Col>
+          
+      <div className={"category-item"}>
+        <p className={Choose_Category==="All"? "active":null} onClick={()=>setChoose_Category("All")}>All</p>
+              {category.data && category.data.data.map((item,index)=>
+                <p key={index} className={Choose_Category===item.id? "active":null} onClick={()=>setChoose_Category(item.id)}>{item.title}</p>)
+            }
+         </div>
               <div>
                 {products.data && products.data.data.map((item,index)=>ProductItem(item))}
               </div>
@@ -159,3 +180,22 @@ export default function Home() {
     </React.Fragment>
   );
 }
+
+
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 10,
+    slidesToSlide: 3 // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 5,
+    slidesToSlide: 2 // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 5,
+    slidesToSlide: 1 // optional, default to 1.
+  }
+};

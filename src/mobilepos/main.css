@@ -275,7 +275,9 @@ table > thead > tr > th {
   display:flex;
   flex-direction:row;
   background-color:#f1f1f1;
-  padding:10px
+  padding:10px;
+  border-radius:15px;
+
 }
 
 .productItem img{
@@ -292,4 +294,38 @@ table > thead > tr > th {
 
 .productItem div h5{
   font-weight:bold;
+}
+
+
+.category-item{
+  display:flex;
+  flex-direction:row;
+  overflow-x:auto;
+}
+
+.category-item p{
+  margin:5px;
+  background-color:white !important;
+  border:1px solid #343a40;
+  color:black;
+  border-radius:15px;
+  padding:10px;
+}
+
+
+.category-item p:hover{
+  margin:5px;
+  background-color:#343a40 !important;  
+  color:white;
+  border-radius:15px;
+  padding:10px;
+}
+
+.category-item p.active{
+  margin:5px;
+  background-color:#343a40 !important;
+  font-weight:bold;
+  color:white;
+  border-radius:15px;
+  padding:10px;
 }
