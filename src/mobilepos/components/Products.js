@@ -31,7 +31,7 @@ import axios from "axios";
 String.prototype.replaceAllTxt = function replaceAll(search, replace) {
   return this.split(search).join(replace);
 };
-
+ 
 const numberWithCommas = (x = 0) => {
   return x
     .toString()
@@ -42,6 +42,8 @@ const numberWithCommas = (x = 0) => {
 export default function Home() {
   const products = useQuery(["products"], database.getProducts);
   const category = useQuery(["category"], database.getCategorys);
+
+  
 
   const [SearchCategoryText, setSearchCategoryText] = useState("");
 
@@ -56,6 +58,13 @@ export default function Home() {
   const [infoshow, setInfoShow] = useState(false);
 
   const [Choose_Category, setChoose_Category] = useState("All");
+
+  const ProductsText = useRef(0);
+  const Category = useRef(0);  
+  const Price = useRef(0);
+  const Quantity = useRef(0);
+   const Description = useRef(0);
+    const ProductsImage = useRef(0);
 
   const addCategory = useMutation(database.postCategory, {
     onSuccess: () => {
@@ -107,7 +116,7 @@ export default function Home() {
   const IdToCategoryText = (id) => {
     if (category.data) {
       const cat = category.data.data.filter((item) => item.id === id);
-      console.log(cat[0].title, "category");
+     
       return cat[0].title;
     }
   };
@@ -142,14 +151,24 @@ export default function Home() {
   return (
     <React.Fragment>
       <section className="products noselect">
-        <Container className="noselect">
+        <Container className="noselect products">
           <Row>
-            <Col>
+           <Row>
+                <Col lg={12}>
+                  <div
+                    className="noselect"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <Bag size={30} color="#000" />
+                    <h4 style={{ marginTop: 5, marginLeft: 5 }}>Products</h4>
+                  </div>
+                </Col>
+            </Row>  
+            <Col lg={4} xl={3}>
               <Form
                 onSubmit={(e) => {
                   e.preventDefault();
                 }}
-                style={{ position: "absolute" }}
               >
                 <Form.Group className="mb-3" controlId="category-control">
                   <Form.Label>Products Name</Form.Label>
@@ -161,10 +180,10 @@ export default function Home() {
                   />{" "}
                   <Form.Label>Category</Form.Label>
                   <Form.Select aria-label="Default select example">
-                    <option>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    {category.data &&
+                  category.data.data.map((item, index) => (
+                     <option value={item.id}>{item.title}</option>
+                  ))}
                   </Form.Select>
                   <Form.Label>Price</Form.Label>
                   <Form.Control
@@ -182,33 +201,27 @@ export default function Home() {
                   />
                   <Form.Label>Description</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="textarea"
                     className="mb-3"
                     placeholder="Description"
-                    required
+                  
+                  />
+                  <Form.Label>Add Products Image</Form.Label>
+                   <Form.Control
+                    type="file"
+                    className="mb-3"
+                    placeholder="Add Image"
+                    accept=".png,.jpg,.jpeg,.webp"
                   />
                   <Button type="submit" style={{ width: "100%" }}>
-                    Add Products
+                    Add New Product
                   </Button>
                   <Form.Text>Click Button Or Enter</Form.Text>
                 </Form.Group>
               </Form>
             </Col>
-            <Col>
-              <Row>
-                <Col lg={12}>
-                  <div
-                    className="noselect"
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <Bag size={30} color="#000" />
-                    <h4 style={{ marginTop: 5, marginLeft: 5 }}>Products</h4>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <InputGroup className="mb-3">
+            <Col lg={8} xl={9}>
+                   <InputGroup className="mb-3">
                     <InputGroup.Text id="inputGroup-sizing-default">
                       <Search />
                     </InputGroup.Text>
@@ -220,12 +233,6 @@ export default function Home() {
                       }}
                     />
                   </InputGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col></Col>
-              </Row>
-
               <div className={"category-item"}>
                 <p
                   className={Choose_Category === "All" ? "active" : null}
@@ -253,7 +260,7 @@ export default function Home() {
         </Container>
 
         {infoshow && (
-          <div className="success-info">
+          <div className="success-info">s
             <CloudArrowUp size={30} />
             <h6>Successfully Added</h6>
             <XCircle
