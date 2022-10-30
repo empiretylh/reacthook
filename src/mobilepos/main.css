@@ -270,6 +270,12 @@ table > thead > tr > th {
 
 /*Product..................*/
 
+.products-item{
+  background-color:black;
+  height:100vh;
+  overflow:auto;
+}
+
 .productItem{
   margin-bottom:8px;
   display:flex;
@@ -277,8 +283,13 @@ table > thead > tr > th {
   background-color:#f1f1f1;
   padding:10px;
   border-radius:15px;
+  justify-content:space-between;
+  position:relative;
+  
 
 }
+
+
 
 .productItem img{
   width:100px;
@@ -289,6 +300,7 @@ table > thead > tr > th {
 
 .productItem div{
   margin-left:10px;
+
  
 }
 
@@ -296,6 +308,15 @@ table > thead > tr > th {
   font-weight:bold;
 }
 
+.product-control{
+  display:flex;
+  flex-direction:column;
+}
+
+
+.product-control button{
+  margin:3px;
+}
 
 .category-item{
   display:flex;
@@ -328,4 +349,31 @@ table > thead > tr > th {
   color:white;
   border-radius:15px;
   padding:10px;
+}
+
+.category-text{
+  padding:5px 10px;
+  background-color:black;
+  color:white;
+  border-radius:15px;
+  text-align:center;
+}
+
+.price-text{
+
+  padding:5px 10px;
+  background-color:#008719;
+  color:white;
+  border-radius:15px;
+  text-align:center;
+}
+
+.qty-text{
+  position:absolute;
+  top:0px;
+  left:-5px;
+  font-weight:bold;
+  background-color:red;
+  padding:5px;
+  color:white;
 }

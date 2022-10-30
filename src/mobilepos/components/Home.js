@@ -253,7 +253,7 @@ export default function Home() {
                 <img src={pic.expense} alt="expense" />
                 <div>
                   <h2>Expense</h2>
-                  <h3>{numberWithCommas(ComputeExpense)}</h3>
+                <h3>{numberWithCommas(ComputeExpense)}</h3>
                 </div>
               </div>
             </Col>
