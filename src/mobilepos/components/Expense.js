@@ -26,16 +26,16 @@ import Button from "react-bootstrap/Button";
 import { Pie, Column, Area } from "@ant-design/plots";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-
 import {
   Bag,
   Boxes,
   CloudArrowUp,
   Search,
+  Wallet,
   XCircle,
 } from "react-bootstrap-icons";
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import { Typeahead } from "react-bootstrap-typeahead"; // ES2015
 
 import axios from "axios";
 
@@ -50,7 +50,7 @@ const numberWithCommas = (x = 0) => {
     .concat(" Ks");
 };
 
-export default function Home() {
+export default function Expense() {
   const [pauseDataFetching, setPauseDataFetching] = useState(true);
 
   const products = useQuery(["products"], database.getProducts, {
@@ -287,8 +287,8 @@ export default function Home() {
                   e.preventDefault();
                   if (eCategory.current !== 0) {
                     PutProductsToServer();
-                  }else{
-                    alert('Please Select Category')
+                  } else {
+                    alert("Please Select Category");
                   }
                 }}
               >
@@ -372,19 +372,21 @@ export default function Home() {
 
   const textForm = useRef(0);
 
+  const options = ["Bills", "ဖုန်းဘေလ်"];
+
   return (
     <React.Fragment>
-      <section className="products noselect">
-        <Edit_Product_Modal show={editModal} onHide={editModalClose} />
-        <Container fluid className="noselect products">
+      <section className="expense noselect">
+        {/* <Edit_Product_Modal show={editModal} onHide={editModalClose} /> */}
+        <Container fluid className="noselect expense">
           <Row>
             <Col lg={12}>
               <div
                 className="noselect"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <Bag size={30} color="#000" />
-                <h4 style={{ marginTop: 5, marginLeft: 5 }}>Products</h4>
+                <Wallet size={30} color={"#000"} />
+                <h4 style={{ marginTop: 5, marginLeft: 5 }}>Expense</h4>
               </div>
             </Col>
           </Row>
@@ -395,33 +397,22 @@ export default function Home() {
                   e.preventDefault();
                   if (Category.current !== 0) {
                     PostProductsToServer();
-                  }else{
-                    alert('Please Select Category')
+                  } else {
+                    alert("Please Select Category");
                   }
                 }}
                 ref={textForm}
               >
                 <Form.Group className="mb-3" controlId="category-control">
-                  <Form.Label>Products Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    className="mb-3"
-                    placeholder="Products Name"
-                    required
-                    onChange={(e) => (ProductsText.current = e.target.value)}
+                  <Form.Label>Title</Form.Label>
+                  <Typeahead
+                    id="basic-typeahead-single"
+                    labelKey="name"
+                    // onChange={setSingleSelections}
+                    options={options}
+                    placeholder="Choose a state..."
+                    // selected={singleSelections}
                   />
-                  <Form.Label>Category</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    onChange={(e) => (Category.current = e.target.value)}
-                    required
-                  >
-                    <option value={0}>Select Category</option>
-                    {category.data &&
-                      category.data.data.map((item, index) => (
-                        <option value={item.id}>{item.title}</option>
-                      ))}
-                  </Form.Select>
                   <Form.Label>Price</Form.Label>
                   <Form.Control
                     type="number"
@@ -430,14 +421,7 @@ export default function Home() {
                     required
                     onChange={(e) => (Price.current = e.target.value)}
                   />
-                  <Form.Label>Qty</Form.Label>
-                  <Form.Control
-                    type="number"
-                    className="mb-3"
-                    placeholder="Quantity"
-                    required
-                    onChange={(e) => (Quantity.current = e.target.value)}
-                  />
+
                   <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
@@ -445,58 +429,13 @@ export default function Home() {
                     placeholder="Description"
                     onChange={(e) => (Description.current = e.target.value)}
                   />
-                  <Form.Label>Add Products Image</Form.Label>
-                  <Form.Control
-                    type="file"
-                    className="mb-3"
-                    placeholder="Add Image"
-                    accept=".png,.jpg,.jpeg,.webp"
-                    onChange={(e) =>
-                      (ProductsImage.current = e.target.files[0])
-                    }
-                  />
+
                   <Button type="submit" style={{ width: "100%" }}>
-                    Add New Product
+                    Add Expense
                   </Button>
                   <Form.Text>Click Button Or Enter</Form.Text>
                 </Form.Group>
               </Form>
-            </Col>
-            <Col md={7} lg={8} xl={9}>
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="inputGroup-sizing-default">
-                  <Search />
-                </InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  placeholder="Search Products Here"
-                  onChange={(e) => {
-                    setSearchPrdouctText(e.target.value);
-                  }}
-                />
-              </InputGroup>
-              <div className={"category-item"}>
-                <p
-                  className={Choose_Category === "All" ? "active" : null}
-                  onClick={() => setChoose_Category("All")}
-                >
-                  All
-                </p>
-                {category.data &&
-                  category.data.data.map((item, index) => (
-                    <p
-                      key={index}
-                      className={Choose_Category === item.id ? "active" : null}
-                      onClick={() => setChoose_Category(item.id)}
-                    >
-                      {item.title}
-                    </p>
-                  ))}
-              </div>
-              <div className={"products-item"}>
-                {products.data &&
-                  productsdata.map((item, index) => ProductItem(item))}
-              </div>
             </Col>
           </Row>
         </Container>

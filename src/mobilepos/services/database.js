@@ -4,12 +4,29 @@ class Database {
   getProducts() {
     return axios.get("/api/products/");
   }
+
+  postProduct(data) {
+    return axios.post("/api/products/", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
+  putProduct(data){
+    return axios.put("/api/products/", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
   getCategorys() {
     return axios.get("/api/categorys/");
   }
 
-  postCategory(data){
-    return axios.post("/api/categorys/",data);
+  postCategory(data) {
+    return axios.post("/api/categorys/", data);
   }
 
   getProfile() {

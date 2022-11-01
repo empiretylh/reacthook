@@ -29,7 +29,7 @@ const numberWithCommas = (x = 0) => {
 };
 
 export default function Home() {
-  const products = useQuery(["products"], database.getProducts);
+ 
   const category = useQuery(["category"], database.getCategorys);
 
   const [SearchCategoryText, setSearchCategoryText] = useState("");
