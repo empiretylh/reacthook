@@ -1,3 +1,4 @@
 import { createContext } from "react";
 
-export const SelectProductsContext = createContext(null);
+const SelectProductsContext = createContext(null);
+export default SelectProductsContext;

@@ -465,7 +465,8 @@ table > thead > tr > th {
   border-radius: 15px;
   justify-content: space-between;
   position: relative;
-  max-height:200px;
+  min-height: auto;
+  max-height:300px;
   max-width:200px;
 }
 
@@ -473,4 +474,25 @@ table > thead > tr > th {
   width:100px;
   height:100px;
   object-fit:'contain';
+}
+
+.addtocart{
+  display:flex;
+  padding:10px 10px;
+  background-color:#008719;
+  align-items: center;
+  justify-content: center;
+  border-radius:15px;
+}
+
+.addtocart h5{
+  margin:0px;
+  padding:0px;
+
+  font-size: medium;
+  color:#ffff;
+}
+
+.addtocart:hover{
+  background-color:#019b1d;
 }

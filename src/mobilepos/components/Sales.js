@@ -29,6 +29,7 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import SelectedContext from '../context/SelectedContext';
+import AddToCart from "../extra/addtocart";
 
 import {
   Bag,
@@ -179,7 +180,8 @@ export default function Sales() {
             <h5>{item.name}</h5>
             <h6 className={"price-text"}>{numberWithCommas(item.price)}</h6>
           <div>
-            
+           <p>Price {item.price}</p>
+            <AddToCart item={item}/>
           </div>
         
         <p className={"qty-text"}>{item.qty}</p>
@@ -187,71 +189,9 @@ export default function Sales() {
     );
   };
 
-  const postProduct = useMutation(database.postProduct, {
-    onSuccess: () => {
-      console.log("Finished");
-      queryClient.invalidateQueries(["products"]);
-      textForm.current.reset();
-      setInfoText("SuccessFully Added New Product");
-      setInfoShow(true);
-      setTimeout(() => setInfoShow((prev) => !prev), 6000);
-    },
+ 
 
-    onMutate: () => {
-      setInfoShow(false);
-    },
-  });
-
-  const putProduct = useMutation(database.putProduct, {
-    onSuccess: () => {
-      console.log("Finished");
-      queryClient.invalidateQueries(["products"]);
-      setInfoText("SuccessFully Updated Products");
-      setInfoShow(true);
-      setPauseDataFetching(true);
-      setTimeout(() => setInfoShow((prev) => !prev), 6000);
-    },
-
-    onMutate: () => {
-      setInfoShow(false);
-    },
-  });
-
-  const PostProductsToServer = () => {
-    const d = new FormData();
-    d.append("name", ProductsText.current);
-    d.append("qty", Quantity.current);
-    d.append("price", Price.current);
-    d.append("category", Category.current);
-    d.append("description", Description.current);
-    d.append("pic", ProductsImage.current !== 0 ? ProductsImage.current : null);
-
-    console.log(d.entries);
-    ProductsImage.current = 0;
-
-    postProduct.mutate(d);
-  };
-
-  const PutProductsToServer = () => {
-    const d = new FormData();
-    d.append("id", epdata.id);
-    d.append("name", eProductsText.current);
-    d.append("qty", eQuantity.current);
-    d.append("price", ePrice.current);
-    d.append("category", eCategory.current);
-    d.append("description", eDescription.current);
-    d.append(
-      "pic",
-      eProductsImage.current !== 0 ? eProductsImage.current : null
-    );
-
-    console.log(d.entries);
-
-    putProduct.mutate(d);
-    eProductsImage.current = 0;
-
-    setEditModal(false);
-  };
+ 
 
   const [editModal, setEditModal] = useState(false);
 
@@ -366,8 +306,12 @@ export default function Sales() {
 
   const textForm = useRef(0);
 
+  const [selectValue,setSelectValue] = useState([]);
+
+  const valueProvider = useMemo(()=>({selectValue,setSelectValue}),[selectValue,setSelectValue])
+
   return (
-    <React.Fragment>
+    <SelectedContext.Provider value={valueProvider}>      
       <section className="products noselect">
         <Edit_Product_Modal show={editModal} onHide={editModalClose} />
         <Container fluid className="noselect products">
@@ -439,7 +383,7 @@ export default function Sales() {
           </div>
         )}
       </section>
-    </React.Fragment>
+      </SelectedContext.Provider>
   );
 }
 
