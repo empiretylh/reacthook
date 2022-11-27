@@ -29,6 +29,59 @@ class Database {
     return axios.post("/api/categorys/", data);
   }
 
+  postExpense(data) {
+    return axios.post("/api/expenses/", data);
+  }
+
+  putExpense(data) {
+    return axios.put("/api/expenses/", data);
+  }
+
+
+  deleteExpense(data){
+    return axios.delete("/api/expenses/",{
+      params:{
+        id:data.id
+      }
+    });
+  }
+
+
+  postOtherIncome(data) {
+    return axios.post("/api/otherincome/", data);
+  }
+
+  putOtherIncome(data) {
+    return axios.put("/api/otherincome/", data);
+  }
+
+
+  deleteOtherIncome(data){
+    return axios.delete("/api/otherincome/",{
+      params:{
+        id:data.id
+      }
+    });
+  }
+
+
+   postPurchase(data) {
+    return axios.post("/api/purchases/", data);
+  }
+
+  putPurchase(data) {
+    return axios.put("/api/purchases/", data);
+  }
+
+
+  deletePurchase(data){
+    return axios.delete("/api/purchases/",{
+      params:{
+        id:data.id
+      }
+    });
+  }
+
   getProfile() {
     return axios.get("/api/profile/");
   }
@@ -46,10 +99,10 @@ class Database {
     });
   }
   getExpense({ queryKey }) {
-    const [_, type, time, startd, endd] = queryKey;
+    const [_,time, startd, endd] = queryKey;
     return axios.get("/api/expenses/", {
       params: {
-        type: type,
+       
         time: time,
         startd: startd,
         endd: endd,
@@ -57,10 +110,10 @@ class Database {
     });
   }
   getPurchase({ queryKey }) {
-    const [_, type, time, startd, endd] = queryKey;
+    const [_, time, startd, endd] = queryKey;
     return axios.get("/api/purchases/", {
       params: {
-        type: type,
+        
         time: time,
         startd: startd,
         endd: endd,
@@ -69,10 +122,10 @@ class Database {
   }
 
   getOtherIncome({ queryKey }) {
-    const [_, type, time, startd, endd] = queryKey;
+    const [_, time, startd, endd] = queryKey;
     return axios.get("/api/otherincome/", {
-      params: {
-        type: type,
+      params: {    
+
         time: time,
         startd: startd,
         endd: endd,

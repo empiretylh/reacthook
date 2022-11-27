@@ -32,6 +32,7 @@ import {
   Boxes,
   CloudArrowUp,
   Search,
+ CurrencyDollar,
   Wallet,
   XCircle,
 } from "react-bootstrap-icons";
@@ -52,29 +53,26 @@ const numberWithCommas = (x = 0) => {
     .concat(" Ks");
 };
 
-export default function Expense() {
+export default function OtherIncome() {
   const [pauseDataFetching, setPauseDataFetching] = useState(true);
 
   const { loading, setLoading, loadingText, setLoadingText } =
     useContext(LoadingContext);
 
   const [radioValue, setRadioValue] = useState("today");
-  const expense = useQuery(["expense", radioValue], database.getExpense, {
+  const expense = useQuery(["expense", radioValue], database.getOtherIncome, {
     enabled: pauseDataFetching,
   });
 
   const [searchText, setSearchText] = useState("");
+ 
 
   const queryClient = useQueryClient();
-
-  const addCategoryText = useRef("");
-
-  const categorytextfield = useRef("");
-
+ 
   const [infoshow, setInfoShow] = useState(false);
   const [infotext, setInfoText] = useState("Successfully Uploaded");
 
-  const [Choose_Category, setChoose_Category] = useState("All");
+
 
   const textRef = useRef(0);
   const text = useRef(0);
@@ -91,7 +89,7 @@ export default function Expense() {
     setPauseDataFetching(true);
   };
 
-  const AddExpenseToServer = useMutation(database.postExpense, {
+  const AddExpenseToServer = useMutation(database.postOtherIncome, {
     onSuccess: () => {
       queryClient.invalidateQueries(["expense"]);
       console.log("Expense Successfully Added");
@@ -117,7 +115,7 @@ export default function Expense() {
     },
   });
 
-  const putExpenseToServer = useMutation(database.putExpense, {
+  const putExpenseToServer = useMutation(database.putOtherIncome, {
     onSuccess: () => {
       setEditModal(false);
       setPauseDataFetching(true);
@@ -137,7 +135,7 @@ export default function Expense() {
     },
   });
 
-  const DeleteExpense = useMutation(database.deleteExpense, {
+  const DeleteExpense = useMutation(database.deleteOtherIncome, {
     onSuccess: () => {
       queryClient.invalidateQueries(["expense"]);
       setInfoText("Successfully Deleted");
@@ -170,13 +168,11 @@ export default function Expense() {
   }, [expense.data, searchText]);
 
   const options = [
-    "ဖုန်းဘေလ်",
-    "မီတာခ",
-    "အခွန်",
-    "ဝန်ထမ်းလခ",
-    "Maintenance",
-    "စက်ပစ္စည်းပြင်ဆင်ထိန်းသိမ်းခ",
-    "ကုန်ပစ္စည်းရောင်းချစရိတ်",
+    "အတိုး",
+    "လက်ဆောင်",
+    "ကုန်ပစ္စည်း တင်ချခ",
+    "Commission",
+    "Invesement",
   ];
 
   const radios = [
@@ -275,7 +271,7 @@ export default function Expense() {
                   <Form.Control
                     type="text"
                     className="mb-3"
-                    placeholder="Type Expense"
+                    placeholder="Type OtherIncome"
                     defaultValue={textRef.current}
                     required
                     onChange={(e) => (textRef.current = e.target.value)}
@@ -314,7 +310,7 @@ export default function Expense() {
                     variant="success"
                     style={{ width: "100%" }}
                   >
-                    Update Expense
+                    Update OtherIncome
                   </Button>
                   <Form.Text>Click Button Or Enter</Form.Text>
                 </Form.Group>
@@ -379,8 +375,8 @@ export default function Expense() {
                   alignItems: "center",
                  
                 }}>
-                  <Wallet size={30} color={"#000"} />
-                  <h4 style={{ marginTop: 5, marginLeft: 5 }}>Expense</h4>
+                  <CurrencyDollar size={30} color={"#000"} />
+                  <h4 style={{ marginTop: 5, marginLeft: 5 }}>Other Income</h4>
                 </div>
                 <div>
                   <h4>{numberWithCommas(ComputeExpense)}</h4>
@@ -419,11 +415,11 @@ export default function Expense() {
                     labelKey="name"
                     // onChange={setSingleSelections}
                     options={options}
-                    placeholder="Type Or Choose Expense"
+                    placeholder="Type Or Choose OtherIncome"
                     ref={text}
                     onChange={(e) => {
                       textRef.current = e[0];
-                      console.log(text.current, "Now");
+                    
                     }}
                     onInputChange={(e) => (e ? (textRef.current = e) : null)}
                   />
@@ -453,7 +449,7 @@ export default function Expense() {
                   />
 
                   <Button type="submit" style={{ width: "100%" }}>
-                    Add Expense
+                    Add OtherIncome
                   </Button>
                   <Form.Text>Click Button Or Enter</Form.Text>
                 </Form.Group>

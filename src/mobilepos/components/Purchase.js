@@ -29,7 +29,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import {
   Bag,
-  Boxes,
+  Box2,
   CloudArrowUp,
   Search,
   Wallet,
@@ -52,14 +52,14 @@ const numberWithCommas = (x = 0) => {
     .concat(" Ks");
 };
 
-export default function Expense() {
+export default function Purchase() {
   const [pauseDataFetching, setPauseDataFetching] = useState(true);
 
   const { loading, setLoading, loadingText, setLoadingText } =
     useContext(LoadingContext);
 
   const [radioValue, setRadioValue] = useState("today");
-  const expense = useQuery(["expense", radioValue], database.getExpense, {
+  const expense = useQuery(["expense", radioValue], database.getPurchase, {
     enabled: pauseDataFetching,
   });
 
@@ -78,7 +78,7 @@ export default function Expense() {
 
   const textRef = useRef(0);
   const text = useRef(0);
-  const dateRef = useRef(0);
+  const dateRef = useRef(new Date().toLocaleDateString());
   const Price = useRef(0);
   const Description = useRef(0);
 
@@ -91,7 +91,7 @@ export default function Expense() {
     setPauseDataFetching(true);
   };
 
-  const AddExpenseToServer = useMutation(database.postExpense, {
+  const AddExpenseToServer = useMutation(database.postPurchase, {
     onSuccess: () => {
       queryClient.invalidateQueries(["expense"]);
       console.log("Expense Successfully Added");
@@ -99,7 +99,7 @@ export default function Expense() {
       setInfoShow(true);
       setTimeout(() => setInfoShow((prev) => !prev), 6000);
       textRef.current = 0;
-      dateRef.current = 0;
+      dateRef.current = new Date().toLocaleDateString();
       Price.current = 0;
       Description.current = 0;
 
@@ -117,7 +117,7 @@ export default function Expense() {
     },
   });
 
-  const putExpenseToServer = useMutation(database.putExpense, {
+  const putExpenseToServer = useMutation(database.putPurchase, {
     onSuccess: () => {
       setEditModal(false);
       setPauseDataFetching(true);
@@ -137,7 +137,7 @@ export default function Expense() {
     },
   });
 
-  const DeleteExpense = useMutation(database.deleteExpense, {
+  const DeleteExpense = useMutation(database.deletePurchase, {
     onSuccess: () => {
       queryClient.invalidateQueries(["expense"]);
       setInfoText("Successfully Deleted");
@@ -170,13 +170,7 @@ export default function Expense() {
   }, [expense.data, searchText]);
 
   const options = [
-    "ဖုန်းဘေလ်",
-    "မီတာခ",
-    "အခွန်",
-    "ဝန်ထမ်းလခ",
-    "Maintenance",
-    "စက်ပစ္စည်းပြင်ဆင်ထိန်းသိမ်းခ",
-    "ကုန်ပစ္စည်းရောင်းချစရိတ်",
+    
   ];
 
   const radios = [
@@ -275,7 +269,7 @@ export default function Expense() {
                   <Form.Control
                     type="text"
                     className="mb-3"
-                    placeholder="Type Expense"
+                    placeholder="Type Purchase"
                     defaultValue={textRef.current}
                     required
                     onChange={(e) => (textRef.current = e.target.value)}
@@ -314,7 +308,7 @@ export default function Expense() {
                     variant="success"
                     style={{ width: "100%" }}
                   >
-                    Update Expense
+                    Update Purchase
                   </Button>
                   <Form.Text>Click Button Or Enter</Form.Text>
                 </Form.Group>
@@ -379,8 +373,8 @@ export default function Expense() {
                   alignItems: "center",
                  
                 }}>
-                  <Wallet size={30} color={"#000"} />
-                  <h4 style={{ marginTop: 5, marginLeft: 5 }}>Expense</h4>
+                  <Box2 size={30} color={"#000"} />
+                  <h4 style={{ marginTop: 5, marginLeft: 5 }}>Purchase</h4>
                 </div>
                 <div>
                   <h4>{numberWithCommas(ComputeExpense)}</h4>
@@ -419,7 +413,7 @@ export default function Expense() {
                     labelKey="name"
                     // onChange={setSingleSelections}
                     options={options}
-                    placeholder="Type Or Choose Expense"
+                    placeholder="Type Or Choose Purchase"
                     ref={text}
                     onChange={(e) => {
                       textRef.current = e[0];
@@ -439,7 +433,7 @@ export default function Expense() {
                   <Form.Control
                     type="date"
                     className="mb-3"
-                    placeholder="Price"
+                    placeholder="Date"
                     required
                     onChange={(e) => (dateRef.current = e.target.value)}
                   />
@@ -453,7 +447,7 @@ export default function Expense() {
                   />
 
                   <Button type="submit" style={{ width: "100%" }}>
-                    Add Expense
+                    Add Purchase
                   </Button>
                   <Form.Text>Click Button Or Enter</Form.Text>
                 </Form.Group>
@@ -520,8 +514,8 @@ export default function Expense() {
                                 style={{ marginLeft: 5 }}
                                 onClick={() => {
                                   onEditModal(item);
-                                }}
-                              >
+                                }}>
+                              
                                 Edit
                               </Button>
                               <Button

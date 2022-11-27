@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const API_URL = "http://192.168.43.247:8000/api/";
+const API_URL = "http://172.17.0.1:8000/api/";
 
 class AuthService {
   login(username, password) {
     const data = { username: username, password: password };
 
-    return axios.postForm("http://192.168.43.247:8000/auth/login/", data)
+    return axios.postForm("http://172.17.0.1:8000/auth/login/", data)
       .then((res) => {
         console.log(JSON.stringify(res.data));
         localStorage.setItem("user_token", res.data.token);
@@ -16,7 +16,7 @@ class AuthService {
 
   admin() {
     axios
-      .get("http://192.168.43.247:8000/login")
+      .get("http://172.17.0.1:8000/login")
       .then((res) => console.log(res));
   }
 

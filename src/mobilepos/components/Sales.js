@@ -7,7 +7,6 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useContext,
   useRef,
   useState,
 } from "react";
@@ -29,11 +28,12 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import LoadingContext from '../context/LoadingContext';
+import SelectedContext from '../context/SelectedContext';
 
 import {
   Bag,
   Boxes,
+  Cart,
   CloudArrowUp,
   Search,
   XCircle,
@@ -52,7 +52,7 @@ const numberWithCommas = (x = 0) => {
     .concat(" Ks");
 };
 
-export default function Home() {
+export default function Sales() {
   const [pauseDataFetching, setPauseDataFetching] = useState(true);
 
   const products = useQuery(["products"], database.getProducts, {
@@ -61,11 +61,6 @@ export default function Home() {
   const category = useQuery(["category"], database.getCategorys, {
     enabled: pauseDataFetching,
   });
-
-
-const { loading, setLoading, loadingText, setLoadingText } =
-    useContext(LoadingContext);
-
 
   const [SearchCategoryText, setSearchCategoryText] = useState("");
 
@@ -160,41 +155,33 @@ const { loading, setLoading, loadingText, setLoadingText } =
     if (category.data) {
       const cat = category.data.data.filter((item) => item.id === id);
 
-      return  cat[0] && cat[0].title;
+      return cat[0].title;
     }
   };
 
-  const ProductItem = (item) => {
+
+
+  const ProductItem = ({item}) => {
     return (
-      <div className="productItem">
-        <div style={{ display: "flex", flexDirection: "row" }}>
+      <div className="sales-productItem">
           <img
             src={
               item.pic
                 ? axios.defaults.baseURL + item.pic
                 : "https://static.thenounproject.com/png/101825-200.png"
             }
-          />
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <h5>{item.name}</h5>
-            <p className={"category-text"}>{IdToCategoryText(item.category)}</p>
-            <h6 className={"price-text"}>{numberWithCommas(item.price)}</h6>
-          </div>
-        </div>
-        <div className={"product-control"}>
-          <Button variant="success">Add Qty</Button>
-          <Button
-            variant="dark"
-            onClick={() => {
-              setEditModal(true);
-              setEditProductData(item);
-              setPauseDataFetching(false);
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src = "https://static.thenounproject.com/png/101825-200.png";
             }}
-          >
-            Edit Product
-          </Button>
-          <Button variant="danger">Delete Product</Button>
-        </div>
+          />
+          
+            <h5>{item.name}</h5>
+            <h6 className={"price-text"}>{numberWithCommas(item.price)}</h6>
+          <div>
+            
+          </div>
+        
         <p className={"qty-text"}>{item.qty}</p>
       </div>
     );
@@ -204,7 +191,6 @@ const { loading, setLoading, loadingText, setLoadingText } =
     onSuccess: () => {
       console.log("Finished");
       queryClient.invalidateQueries(["products"]);
-      setLoading(false);
       textForm.current.reset();
       setInfoText("SuccessFully Added New Product");
       setInfoShow(true);
@@ -213,11 +199,7 @@ const { loading, setLoading, loadingText, setLoadingText } =
 
     onMutate: () => {
       setInfoShow(false);
-      setLoading(true);
     },
-    onError:()=>{
-      setLoading(false);
-    }
   });
 
   const putProduct = useMutation(database.putProduct, {
@@ -225,7 +207,6 @@ const { loading, setLoading, loadingText, setLoadingText } =
       console.log("Finished");
       queryClient.invalidateQueries(["products"]);
       setInfoText("SuccessFully Updated Products");
-      setLoading(false);
       setInfoShow(true);
       setPauseDataFetching(true);
       setTimeout(() => setInfoShow((prev) => !prev), 6000);
@@ -233,11 +214,7 @@ const { loading, setLoading, loadingText, setLoadingText } =
 
     onMutate: () => {
       setInfoShow(false);
-      setLoading(true);
     },
-    onError:()=>{
-      setLoading(false);
-    }
   });
 
   const PostProductsToServer = () => {
@@ -304,8 +281,8 @@ const { loading, setLoading, loadingText, setLoadingText } =
                   e.preventDefault();
                   if (eCategory.current !== 0) {
                     PutProductsToServer();
-                  }else{
-                    alert('Please Select Category')
+                  } else {
+                    alert("Please Select Category");
                   }
                 }}
               >
@@ -400,86 +377,13 @@ const { loading, setLoading, loadingText, setLoadingText } =
                 className="noselect"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <Bag size={30} color="#000" />
-                <h4 style={{ marginTop: 5, marginLeft: 5 }}>Products</h4>
+                <Cart size={30} color="#000" />
+                <h4 style={{ marginTop: 5, marginLeft: 5 }}>Sales</h4>
               </div>
             </Col>
           </Row>
           <Row>
-            <Col md={5} lg={4} xl={3}>
-              <Form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (Category.current !== 0) {
-                    PostProductsToServer();
-                  }else{
-                    alert('Please Select Category')
-                  }
-                }}
-                ref={textForm}
-              >
-                <Form.Group className="mb-3" controlId="category-control">
-                  <Form.Label>Products Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    className="mb-3"
-                    placeholder="Products Name"
-                    required
-                    onChange={(e) => (ProductsText.current = e.target.value)}
-                  />
-                  <Form.Label>Category</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    onChange={(e) => (Category.current = e.target.value)}
-                    required
-                  >
-                    <option value={0}>Select Category</option>
-                    {category.data &&
-                      category.data.data.map((item, index) => (
-                        <option value={item.id}>{item.title}</option>
-                      ))}
-                  </Form.Select>
-                  <Form.Label>Price</Form.Label>
-                  <Form.Control
-                    type="number"
-                    className="mb-3"
-                    placeholder="Price"
-                    required
-                    onChange={(e) => (Price.current = e.target.value)}
-                  />
-                  <Form.Label>Qty</Form.Label>
-                  <Form.Control
-                    type="number"
-                    className="mb-3"
-                    placeholder="Quantity"
-                    required
-                    onChange={(e) => (Quantity.current = e.target.value)}
-                  />
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    className="mb-3"
-                    placeholder="Description"
-                    onChange={(e) => (Description.current = e.target.value)}
-                  />
-                  <Form.Label>Add Products Image</Form.Label>
-                  <Form.Control
-                    type="file"
-                    className="mb-3"
-                    placeholder="Add Image"
-                    accept=".png,.jpg,.jpeg,.webp"
-                    onChange={(e) =>
-                      (ProductsImage.current = e.target.files[0])
-                    }
-                  />
-                  <Button type="submit" style={{ width: "100%" }}>
-                    Add New Product
-                  </Button>
-                  <Form.Text>Click Button Or Enter</Form.Text>
-                </Form.Group>
-              </Form>
-            </Col>
-            <Col md={7} lg={8} xl={9}>
+            <Col md={7} lg={9} xl={8}>
               <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
                   <Search />
@@ -493,27 +397,32 @@ const { loading, setLoading, loadingText, setLoadingText } =
                 />
               </InputGroup>
               <div className={"category-item"}>
-                <p
+                <div
                   className={Choose_Category === "All" ? "active" : null}
                   onClick={() => setChoose_Category("All")}
                 >
-                  All
-                </p>
+                  <h6>All</h6>
+                </div>
                 {category.data &&
                   category.data.data.map((item, index) => (
-                    <p
+                    <div
                       key={index}
                       className={Choose_Category === item.id ? "active" : null}
                       onClick={() => setChoose_Category(item.id)}
                     >
-                      {item.title}
-                    </p>
+                      <h6>{item.title}</h6>
+                    </div>
                   ))}
               </div>
-              <div className={"products-item"}>
+              <div className={"sales-products-items"}>
                 {products.data &&
-                  productsdata.map((item, index) => ProductItem(item))}
+                  productsdata.map((item, index) =>(
+                    <ProductItem item={item} key={index}/>
+                    ))}
               </div>
+            </Col>
+            <Col md={5} lg={3} xl={4}>
+              
             </Col>
           </Row>
         </Container>
