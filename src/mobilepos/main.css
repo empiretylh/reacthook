@@ -496,3 +496,75 @@ table > thead > tr > th {
 .addtocart:hover{
   background-color:#019b1d;
 }
+
+
+.addtocart-selected{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  width:100%;
+  height:50px;
+
+}
+
+
+
+.addtocart-selected input{
+    width:90px;
+
+}
+
+
+.tools{
+  margin:5px;
+  width:40px;
+  background-color:red;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+}
+
+
+
+.tools p{
+  padding:0;
+  margin:0;
+  font-size:25px;
+  font-weight:bold;
+}
+
+
+.plus-button{
+  background-color:blue;
+  color:white;
+}
+
+
+
+.plus-button:hover{
+  background-color:#044cc9;
+  color:white;
+}
+
+
+.plus-button p{
+  color:white;
+}
+
+.minus-button{
+  background-color:red;
+  color:white;
+}
+
+
+.minus-button:hover{
+  background-color:#c9040b;
+  color:white;
+}
+
+
+.minus-button p{
+  color:white;
+}

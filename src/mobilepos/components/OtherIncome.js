@@ -268,14 +268,14 @@ export default function OtherIncome() {
               >
                 <Form.Group className="mb-3" controlId="category-control">
                   <Form.Label>Title</Form.Label>
-                  <Form.Control
-                    type="text"
-                    className="mb-3"
-                    placeholder="Type OtherIncome"
-                    defaultValue={textRef.current}
-                    required
-                    onChange={(e) => (textRef.current = e.target.value)}
-                  />
+                    <Form.Control
+                      type="text"
+                      className="mb-3"
+                      placeholder="Type OtherIncome"
+                      defaultValue={textRef.current}
+                      required
+                      onChange={(e) => (textRef.current = e.target.value)}
+                    />
 
                   <Form.Label>Price</Form.Label>
                   <Form.Control

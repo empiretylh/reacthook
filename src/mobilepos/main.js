@@ -9,7 +9,7 @@ import Expense from "./components/Expense";
 import OtherIncome from "./components/OtherIncome";
 import Purchase from "./components/Purchase";
 import Sales from "./components/Sales";
-import authService from "./services/auth.service";
+import authService,{API_URL} from "./services/auth.service";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Navbar from "./components/Navbar";
 import SideBar from "./components/Sidebar";
@@ -22,7 +22,7 @@ import Modal from "react-bootstrap/Modal";
 import { PICTURE } from "../assets/assets";
 const queryClient = new QueryClient();
 const token = authService.getCurrentUserToken();
-axios.defaults.baseURL = "http://172.17.0.1:8000";
+axios.defaults.baseURL = API_URL;
 axios.defaults.headers.common = {
   Authorization: `Token ${token}`,
 };

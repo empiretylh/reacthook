@@ -28,8 +28,9 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import SelectedContext from '../context/SelectedContext';
+import SelectedContext from "../context/SelectedContext";
 import AddToCart from "../extra/addtocart";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import {
   Bag,
@@ -160,38 +161,36 @@ export default function Sales() {
     }
   };
 
-
-
-  const ProductItem = ({item}) => {
+  const ProductItem = ({ item }) => {
     return (
       <div className="sales-productItem">
-          <img
-            src={
-              item.pic
-                ? axios.defaults.baseURL + item.pic
-                : "https://static.thenounproject.com/png/101825-200.png"
-            }
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "https://static.thenounproject.com/png/101825-200.png";
-            }}
-          />
+        <img
+          src={
+            item.pic
+              ? axios.defaults.baseURL + item.pic
+              : "https://static.thenounproject.com/png/101825-200.png"
+          }
+          onError={({ currentTarget }) => {
           
-            <h5>{item.name}</h5>
-            <h6 className={"price-text"}>{numberWithCommas(item.price)}</h6>
-          <div>
-           <p>Price {item.price}</p>
-            <AddToCart item={item}/>
-          </div>
-        
+            currentTarget.src =
+              "https://static.thenounproject.com/png/101825-200.png";
+          }}
+
+        />
+
+
+
+        <h5>{item.name}</h5>
+        <h6 className={"price-text"}>{numberWithCommas(item.price)}</h6>
+        <div>
+          <p>Price {item.price}</p>
+          <AddToCart item={item} />
+        </div>
+
         <p className={"qty-text"}>{item.qty}</p>
       </div>
     );
   };
-
- 
-
- 
 
   const [editModal, setEditModal] = useState(false);
 
@@ -200,120 +199,58 @@ export default function Sales() {
     setPauseDataFetching(true);
   };
 
-  function Edit_Product_Modal(props) {
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        {epdata !== null ? (
-          <>
-            <Modal.Header closeButton>
-              <Modal.Title id="contained-modal-title-vcenter">
-                Edit Product {epdata.name}
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (eCategory.current !== 0) {
-                    PutProductsToServer();
-                  } else {
-                    alert("Please Select Category");
-                  }
-                }}
-              >
-                <Form.Group className="mb-3" controlId="category-control">
-                  <Form.Label>Products Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    className="mb-3"
-                    placeholder="Products Name"
-                    required
-                    defaultValue={epdata.name}
-                    onChange={(e) => (eProductsText.current = e.target.value)}
-                  />
-                  <Form.Label>Category</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={epdata.category}
-                    onChange={(e) => (eCategory.current = e.target.value)}
-                  >
-                    <option value={0}>Select Category</option>
-                    {category.data &&
-                      category.data.data.map((item, index) => (
-                        <option value={item.id}>{item.title}</option>
-                      ))}
-                  </Form.Select>
-                  <Form.Label>Price</Form.Label>
-                  <Form.Control
-                    type="number"
-                    className="mb-3"
-                    placeholder="Price"
-                    defaultValue={epdata.price}
-                    required
-                    onChange={(e) => (ePrice.current = e.target.value)}
-                  />
-                  <Form.Label>Qty</Form.Label>
-                  <Form.Control
-                    type="number"
-                    className="mb-3"
-                    placeholder="Quantity"
-                    defaultValue={epdata.qty}
-                    required
-                    onChange={(e) => (eQuantity.current = e.target.value)}
-                  />
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    className="mb-3"
-                    placeholder="Description"
-                    defaultValue={
-                      epdata.description === "undefined"
-                        ? ""
-                        : epdata.description
-                    }
-                    onChange={(e) => (eDescription.current = e.target.value)}
-                  />
-                  <Form.Label>Add Products Image</Form.Label>
-                  <Form.Control
-                    type="file"
-                    className="mb-3"
-                    placeholder="Add Image"
-                    accept=".png,.jpg,.jpeg,.webp"
-                    onChange={(e) =>
-                      (eProductsImage.current = e.target.files[0])
-                    }
-                  />
-                  <Button type="submit" style={{ width: "100%" }}>
-                    Update Product
-                  </Button>
-                  <Form.Text>Click Button Or Enter</Form.Text>
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={props.onHide}>Close</Button>
-            </Modal.Footer>
-          </>
-        ) : null}
-      </Modal>
-    );
-  }
-
   const textForm = useRef(0);
 
-  const [selectValue,setSelectValue] = useState([]);
+  const [selectValue, setSelectValue] = useState([]);
 
-  const valueProvider = useMemo(()=>({selectValue,setSelectValue}),[selectValue,setSelectValue])
+  const valueProvider = useMemo(
+    () => ({ selectValue, setSelectValue }),
+    [selectValue, setSelectValue]
+  );
+
+  const SetValue = (value, id) => {
+    let cartdata = [...selectValue];
+     let index = cartdata.findIndex(it => it.id === id);
+      if (value === 0) {
+        cartdata = cartdata.filter(a => a.id !== id);
+        console.log(index);
+      } else {
+        cartdata[index] = {
+          ...cartdata[index],
+          ['qty']: parseInt(value) || 1,
+        };
+        cartdata[index] = {
+          ...cartdata[index],
+          ['total']: cartdata[index].price * cartdata[index].qty,
+        };
+      }
+
+        console.log(cartdata,'whatthefuck')
+ 
+     setSelectValue(cartdata);
+  };
+
+  const cartData = useMemo(()=>{
+      if(selectValue){
+        return selectValue;
+      }
+  },[selectValue])
+
+  const totalCartAmount = useMemo(()=>{
+    let total = 0;
+    if(selectValue){
+      selectValue.map((item,index)=>{
+        total += parseInt(item.total)
+      })
+
+      return total;
+
+    }
+  },[selectValue])
 
   return (
-    <SelectedContext.Provider value={valueProvider}>      
+    <SelectedContext.Provider value={valueProvider}>
       <section className="products noselect">
-        <Edit_Product_Modal show={editModal} onHide={editModalClose} />
         <Container fluid className="noselect products">
           <Row>
             <Col lg={12}>
@@ -327,7 +264,7 @@ export default function Sales() {
             </Col>
           </Row>
           <Row>
-            <Col md={7} lg={9} xl={8}>
+            <Col md={6} lg={7} xl={7}>
               <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
                   <Search />
@@ -360,13 +297,57 @@ export default function Sales() {
               </div>
               <div className={"sales-products-items"}>
                 {products.data &&
-                  productsdata.map((item, index) =>(
-                    <ProductItem item={item} key={index}/>
-                    ))}
+                  productsdata.map((item, index) => (
+                    <ProductItem item={item} key={index} />
+                  ))}
               </div>
             </Col>
-            <Col md={5} lg={3} xl={4}>
-              
+            <Col md={6} lg={5} xl={5}>
+            <div>
+              <h6>Total Amount {totalCartAmount}</h6>
+            </div>
+              <div>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cartData &&
+                      cartData.map((item, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{item.name}</td>
+                          <td style={{ textAlign: "right" }}>
+                            {numberWithCommas(item.price)}
+                          </td>
+                          <td>
+                            <Form.Control
+                              type="number"
+                              placeholder="Qty"
+                              value={item.qty}
+                              autoFocus={true}
+                              onClick={(e) => e.target.select()}
+                              onFocus={(e) => {
+                                console.log(e, "selectfocuess");
+                                e.target.select();
+                              }}
+                              onChange={(e) =>
+                                SetValue(e.target.value, item.id)
+                              }
+                            />
+                          </td>
+                          <td>{item.total}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </Table>
+              </div>
             </Col>
           </Row>
         </Container>
@@ -383,7 +364,7 @@ export default function Sales() {
           </div>
         )}
       </section>
-      </SelectedContext.Provider>
+    </SelectedContext.Provider>
   );
 }
 
