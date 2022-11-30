@@ -95,6 +95,7 @@ export default function Sales() {
   const eProductsImage = useRef(0);
 
   const [epdata, setEditProductData] = useState(null);
+  const [cartSearchText,setCartSearchText] = useState('');
 
   useEffect(() => {
     if (epdata !== null) {
@@ -232,9 +233,11 @@ export default function Sales() {
 
   const cartData = useMemo(()=>{
       if(selectValue){
-        return selectValue;
+        var filter = selectValue.filter(item=> cartSearchText.toLowerCase().includes(item.name.toLowerCase()))
+
+        return filter;
       }
-  },[selectValue])
+  },[selectValue,cartSearchText])
 
   const totalCartAmount = useMemo(()=>{
     let total = 0;
@@ -244,9 +247,9 @@ export default function Sales() {
       })
 
       return total;
-
     }
   },[selectValue])
+
 
   return (
     <SelectedContext.Provider value={valueProvider}>
@@ -303,8 +306,19 @@ export default function Sales() {
               </div>
             </Col>
             <Col md={6} lg={5} xl={5}>
-            <div>
-              <h6>Total Amount {totalCartAmount}</h6>
+            <div style={{
+              display:'flex',
+              flexDirection:'row',
+              justifyContent:'space-between'
+            }}>
+              <Form.Control
+                  type="text"
+                  placeholder="Search Products Here"
+                  onChange={(e) => {
+                    setCartSearchText(e);
+                  }}
+                />
+              <h6>Total Amount : {numberWithCommas(totalCartAmount)}</h6>
             </div>
               <div>
                 <Table striped bordered hover>
@@ -342,7 +356,7 @@ export default function Sales() {
                               }
                             />
                           </td>
-                          <td>{item.total}</td>
+                          <td>{numberWithCommas(item.total)}</td>
                         </tr>
                       ))}
                   </tbody>

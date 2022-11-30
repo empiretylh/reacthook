@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = "http://172.17.0.1:8000";
+export const API_URL = "https://empirepos.pythonanywhere.com";
 
 class AuthService {
   login(username, password) {
