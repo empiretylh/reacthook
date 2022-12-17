@@ -9,6 +9,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  useReducer,
 } from "react";
 import {
   Col,
@@ -30,6 +31,8 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import SelectedContext from "../context/SelectedContext";
 import AddToCart from "../extra/addtocart";
+import ProductItems from "../extra/ProductItems";
+
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import {
@@ -53,6 +56,30 @@ const numberWithCommas = (x = 0) => {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     .concat(" Ks");
 };
+
+function dataReducer(state, action) {
+  switch (action.type) {
+    case "add":
+      // Add the new item to the array
+      return [...state, action.item];
+    case "update":
+      // Find the item in the array with the matching id
+      const item = state.find((item) => item.id === action.id);
+      // If the item was found, update its value
+      if (item) {
+        return state.map((i) => (i === item ? action.item : i));
+      }
+      return state;
+    case "delete":
+      // const item = state.find((a) => a.id === action.id);
+      // If the item was found, update its value
+      console.log('Deleteing')
+      return state.filter((i) => i.id !== action.id);
+      
+    default:
+      return state;
+  }
+}
 
 export default function Sales() {
   const [pauseDataFetching, setPauseDataFetching] = useState(true);
@@ -95,7 +122,24 @@ export default function Sales() {
   const eProductsImage = useRef(0);
 
   const [epdata, setEditProductData] = useState(null);
-  const [cartSearchText,setCartSearchText] = useState('');
+  const [cartSearchText, setCartSearchText] = useState("");
+
+  const [selectValue, setSelectValue] = useState([]);
+
+  const [selectData, dispatch] = useReducer(dataReducer, []);
+
+  const handleAdd = (item) => {
+    dispatch({ type: "add", item });
+  };
+
+  // Update an existing item in the data array
+  const handleUpdate = (id, item) => {
+    dispatch({ type: "update", id, item });
+  };
+
+   const handleDelete = (id) => {
+    dispatch({ type: "delete",id});
+  };
 
   useEffect(() => {
     if (epdata !== null) {
@@ -123,8 +167,9 @@ export default function Sales() {
   });
 
   const productsdata = useMemo(() => {
+    console.log('We Chagend')
     if (products.data) {
-      return products.data.data.filter(
+      const first = products.data.data.filter(
         (item) => {
           return (
             (Choose_Category === "All"
@@ -138,8 +183,17 @@ export default function Sales() {
         }
         // console.log(item)
       );
+      // return first;
+      if (selectData) {
+        const second = first.filter(
+          (a) => !selectData.map((d) => d.id).includes(a.id)
+        );
+        return second;
+      } else {
+        return first;
+      }
     }
-  }, [SearchProductText, products.data, Choose_Category]);
+  }, [SearchProductText, products.data, Choose_Category,selectData]);
 
   const categorydata = useMemo(() => {
     if (category.data) {
@@ -162,36 +216,32 @@ export default function Sales() {
     }
   };
 
-  const ProductItem = ({ item }) => {
-    return (
-      <div className="sales-productItem">
-        <img
-          src={
-            item.pic
-              ? axios.defaults.baseURL + item.pic
-              : "https://static.thenounproject.com/png/101825-200.png"
-          }
-          onError={({ currentTarget }) => {
-          
-            currentTarget.src =
-              "https://static.thenounproject.com/png/101825-200.png";
-          }}
-
-        />
-
-
-
-        <h5>{item.name}</h5>
-        <h6 className={"price-text"}>{numberWithCommas(item.price)}</h6>
-        <div>
-          <p>Price {item.price}</p>
-          <AddToCart item={item} />
-        </div>
-
-        <p className={"qty-text"}>{item.qty}</p>
-      </div>
-    );
-  };
+//   const ProductItem = React.memo( ({ item }) => {
+//     return (
+//       <div className="sales-productItem">
+//         <img
+//           src={
+//             item.pic && item.pic === "/media/null" || item.pic ==='null'|| item.pic === null 
+//               ? "https://static.thenounproject.com/png/101825-200.png":
+//               axios.defaults.baseURL + item.pic
+//           }
+//           onError={({ currentTarget }) => {
+//             currentTarget.src =
+//               "https://static.thenounproject.com/png/101825-200.png";
+//           }}
+//         />
+// 
+//         <h5>{item.name}</h5>
+//         <h6 className={"price-text"}>{numberWithCommas(item.price)}</h6>
+//         <div>
+//           <p>Price {item.price}</p>
+//           <AddToCart item={item} />
+//         </div>
+// 
+//         <p className={"qty-text"}>{item.qty}</p>
+//       </div>
+//     );
+//   });
 
   const [editModal, setEditModal] = useState(false);
 
@@ -202,54 +252,49 @@ export default function Sales() {
 
   const textForm = useRef(0);
 
-  const [selectValue, setSelectValue] = useState([]);
-
   const valueProvider = useMemo(
-    () => ({ selectValue, setSelectValue }),
+    () => ({ selectValue, setSelectValue,handleAdd,selectData}),
     [selectValue, setSelectValue]
   );
 
   const SetValue = (value, id) => {
-    let cartdata = [...selectValue];
-     let index = cartdata.findIndex(it => it.id === id);
-      if (value === 0) {
-        cartdata = cartdata.filter(a => a.id !== id);
-        console.log(index);
-      } else {
-        cartdata[index] = {
-          ...cartdata[index],
-          ['qty']: parseInt(value) || 1,
-        };
-        cartdata[index] = {
-          ...cartdata[index],
-          ['total']: cartdata[index].price * cartdata[index].qty,
-        };
-      }
+    let cartdata = [...selectData];
+    let index = cartdata.findIndex((it) => it.id === id);
+    if (value === 0) {
+     handleDelete(id);
+    } else {
+      cartdata[index] = {
+        ...cartdata[index],
+        ["qty"]: parseInt(value) || 1,
+      };
+      cartdata[index] = {
+        ...cartdata[index],
+        ["total"]: cartdata[index].price * cartdata[index].qty,
+      };
 
-        console.log(cartdata,'whatthefuck')
- 
-     setSelectValue(cartdata);
+      handleUpdate(id,cartdata[index])
+    }
+
+    console.log(cartdata, "whatthefuck");
+
+    // setSelectValue(cartdata);
   };
 
-  const cartData = useMemo(()=>{
-      if(selectValue){
-        var filter = selectValue.filter(item=> cartSearchText.toLowerCase().includes(item.name.toLowerCase()))
+  const cartData = useMemo(() => {
+    
+    return selectData;
+  }, [selectData]);
 
-        return filter;
-      }
-  },[selectValue,cartSearchText])
-
-  const totalCartAmount = useMemo(()=>{
+  const totalCartAmount = useMemo(() => {
     let total = 0;
-    if(selectValue){
-      selectValue.map((item,index)=>{
-        total += parseInt(item.total)
-      })
+    if (selectData) {
+      selectData.map((item, index) => {
+        total += parseInt(item.total);
+      });
 
       return total;
     }
-  },[selectValue])
-
+  }, [selectData]);
 
   return (
     <SelectedContext.Provider value={valueProvider}>
@@ -299,36 +344,35 @@ export default function Sales() {
                   ))}
               </div>
               <div className={"sales-products-items"}>
-                {products.data &&
-                  productsdata.map((item, index) => (
-                    <ProductItem item={item} key={index} />
-                  ))}
+              {products.data && <ProductItems items={productsdata}/>}
               </div>
             </Col>
             <Col md={6} lg={5} xl={5}>
-            <div style={{
-              display:'flex',
-              flexDirection:'row',
-              justifyContent:'space-between'
-            }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                }}
+              >
               <Form.Control
                   type="text"
-                  placeholder="Search Products Here"
+                  placeholder="Customer Name"
                   onChange={(e) => {
-                    setCartSearchText(e);
+                    setSearchPrdouctText(e.target.value);
                   }}
                 />
-              <h6>Total Amount : {numberWithCommas(totalCartAmount)}</h6>
-            </div>
+                <h6>Total Amount : {numberWithCommas(totalCartAmount)}</h6>
+              </div>
               <div>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>Qty</th>
-                      <th>Total</th>
+                      <th style={{ minWidth: 100 }}>Name</th>
+
+                      <th style={{ maxWidth: 60, minWidth: 60 }}>Qty</th>
+                      <th style={{ minWidth: 100 }}>Total</th>
+                      <th style={{ minWidth: 20 }}></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -337,9 +381,7 @@ export default function Sales() {
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{item.name}</td>
-                          <td style={{ textAlign: "right" }}>
-                            {numberWithCommas(item.price)}
-                          </td>
+
                           <td>
                             <Form.Control
                               type="number"
@@ -357,6 +399,20 @@ export default function Sales() {
                             />
                           </td>
                           <td>{numberWithCommas(item.total)}</td>
+                          <td>
+                            <h4
+                              style={{
+                                backgroundColor: "red",
+                                color: "white",
+                                padding: 5,
+                                textAlign: "center",
+                                borderRadius: 50,
+                              }}
+                              onClick={(e) => SetValue(0, item.id)}
+                            >
+                              -
+                            </h4>
+                          </td>
                         </tr>
                       ))}
                   </tbody>

@@ -17,21 +17,9 @@ import {
   Modal,
 } from "react-bootstrap";
 const AddToCart = ({ item }) => {
-  const { selectValue, setSelectValue } = useContext(SelectProductsContext);
-
-  const [data,setData] = useState()
-
-  const isSelectd = useMemo(() => {
-    const v = selectValue && selectValue.filter((o) => o.id === item.id);
-    setData(v[0])
-    console.log(v, "is Selected");
-    if (v.length > 0) {
-
-      return true;
-    } else {
-      return false;
-    }
-  }, [selectValue, setSelectValue, item]);
+  const { selectValue, setSelectValue, handleAdd, selectData } = useContext(
+    SelectProductsContext
+  );
 
   const Click = async (item) => {
     let d = {
@@ -42,24 +30,24 @@ const AddToCart = ({ item }) => {
       total: item.price,
       name: item.name,
     };
-    const a = await setSelectValue((prev) => prev.concat(d));
+    handleAdd(d);
   };
 
-  console.log(isSelectd && selectValue.qty, "wweeee");
+  // console.log("Render Cart Data");
 
-
-
-  if (isSelectd) {
-    
-  } else {
-    return (
-      <div>
-        <div className="addtocart" onClick={() => Click(item)}>
-          <h5>Add to Cart</h5>
-        </div>
+  return (
+    <div>
+      <div className="addtocart" onClick={() => Click(item)}>
+        <h5>Add to Cart</h5>
       </div>
-    );
-  }
+    </div>
+  );
 };
 
-export default AddToCart;
+function areEqual(prevProps, nextProps) {
+  // Perform a deep equality check on the props
+  console.log(prevProps,nextProps,'What Data')
+  // return isEqual(prevProps, nextProps);
+}
+
+export default React.memo(AddToCart,areEqual);
