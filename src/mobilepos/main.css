@@ -247,6 +247,11 @@ table > thead > tr > th {
   padding-top: 10px;
 }
 
+.text_thura{
+  
+}
+
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

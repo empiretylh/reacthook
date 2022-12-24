@@ -29,7 +29,7 @@ axios.defaults.headers.common = {
 const MobilePOS = () => {
   useEffect(() => {
     const token = authService.getCurrentUserToken();
-
+    
     axios.defaults.headers.common = {
       Authorization: `Token ${token}`,
     };

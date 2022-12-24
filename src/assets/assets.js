@@ -10,3 +10,10 @@ export const PICTURE = {
 
   loading:require("./spinnerloading.gif")
 };
+
+
+export const IMAGE = {
+  king:require("./voting/crown.png"),
+  queen:require("./voting/queen_crown.png"),
+  loading:require('./voting/spinnerloading.gif')
+}
